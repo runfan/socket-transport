@@ -40,7 +40,10 @@ class SocketTransport extends EventEmitter {
             }
         };
         this.onError = err => fail = err;
-        this.onClose = () => this.emit('close', fail);
+        this.onClose = () => {
+            this.open = false;
+            this.emit('close', fail);
+        };
         
         socket.setEncoding('utf8');
         socket.setNoDelay(true);
@@ -48,6 +51,7 @@ class SocketTransport extends EventEmitter {
         socket.on('error', this.onError);
         socket.on('close', this.onClose);
         this.socket = socket;
+        this.open = true;
     }
     
     detach() {
@@ -65,6 +69,7 @@ class SocketTransport extends EventEmitter {
     }
     
     close() {
+        this.open = false;
         this.socket.destroy();
     }
 }
