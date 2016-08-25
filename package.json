@@ -2,6 +2,7 @@
   "name": "socket-transport",
   "version": "0.1.0",
   "description": "JSON messages over TCP/Unix socket using the transport interface",
+  "keywords": ["transport", "json", "socket", "tcp"],
   "bugs": "https://github.com/yaroslav-korotaev/socket-transport/issues",
   "license": "MIT",
   "author": "Yaroslav Korotaev <yaroslav.korotaev@gmail.com>",
