@@ -3,12 +3,12 @@ const EventEmitter = require('events');
 class SocketTransport extends EventEmitter {
     constructor(socket) {
         super();
-        
+
         let buf = '';
         let length = 0;
         let readable, i, json, message;
         let fail = null;
-        
+
         this.onData = chunk => {
             buf += chunk;
             if (buf.length > SocketTransport.MAX_BUF_LENGTH)
@@ -44,7 +44,7 @@ class SocketTransport extends EventEmitter {
             this.open = false;
             this.emit('close', fail);
         };
-        
+
         socket.setEncoding('utf8');
         socket.setNoDelay(true);
         socket.on('data', this.onData);
@@ -53,7 +53,7 @@ class SocketTransport extends EventEmitter {
         this.socket = socket;
         this.open = true;
     }
-    
+
     detach() {
         const socket = this.socket;
         socket.removeListener('data', this.onData);
@@ -62,12 +62,12 @@ class SocketTransport extends EventEmitter {
         this.socket = null;
         return socket;
     }
-    
-    send(message) {
+
+    send(message, callback) {
         const json = JSON.stringify(message);
-        this.socket.write(json.length + '#' + json, 'utf8');
+        this.socket.write(json.length + '#' + json, 'utf8', callback);
     }
-    
+
     close() {
         this.open = false;
         this.socket.destroy();
